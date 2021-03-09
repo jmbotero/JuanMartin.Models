@@ -65,6 +65,12 @@ namespace JuanMartin.Models
             Sequence = argument3;
         }
 
+        public Problem(int argument1, EulerProblem argument2, string argument3, List<int> argument4)
+            : this(argument1, argument2, argument3)
+        {
+            ListOfNumbers = argument4;
+        }
+
         public Problem(int argument1, EulerProblem argument2, ulong argument3)
             : this(argument1,argument2)
         {

@@ -48,11 +48,18 @@ namespace JuanMartin.Models
             IntNumber = argument3;
         }
 
+        public Problem(int argument1, EulerProblem argument2, int argument3, long[] argument4)
+            : this(argument1, argument2, argument3)
+        {
+            Numbers = argument4;
+        }
+
         public Problem(int argument1, EulerProblem argument2, int argument3, List<int> argument4)
-            : this(argument1,argument2,argument3)
+            : this(argument1, argument2, argument3)
         {
             ListOfNumbers = argument4;
         }
+
         public Problem(int argument1, EulerProblem argument2, long argument3,int argument4)
             : this(argument1,argument2,argument3)
         {

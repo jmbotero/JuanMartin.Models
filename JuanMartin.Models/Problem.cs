@@ -12,6 +12,7 @@ namespace JuanMartin.Models
         public ulong BigNumber { get; set; }
         public long[] Numbers { get; set; }
         public string Sequence { get; set; }
+        public bool TestMode { get; set; }
         public List<int> ListOfNumbers { get; set; }
         public EulerProblem Script { get; set; }
 
@@ -22,6 +23,7 @@ namespace JuanMartin.Models
             Numbers = null;
             Sequence = string.Empty;
             Script = null;
+            TestMode = false;
         }
 
         public Problem(int argument1, EulerProblem argument2)

@@ -45,9 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exam.cs" />
+    <Compile Include="Gallery\Photography.cs" />
     <Compile Include="Problem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />
+    <Compile Include="Gallery\ErrorViewModel.cs" />
+    <Compile Include="Gallery\Gallery.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

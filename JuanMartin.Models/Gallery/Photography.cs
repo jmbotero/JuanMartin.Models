@@ -19,6 +19,11 @@ namespace JuanMartin.Models.Gallery
         public int NumberOfViews { get; set; }
         public  List<string> Keywords { get; set; }
         public double Rank { get; private set; }
+        public string Location { get; set; }
 
+        public override string ToString()
+        {
+            return $"{System.IO.Path.Combine(Path, FileName)},{Rank},{Location}";
+        }
     }
 }

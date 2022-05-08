@@ -2,7 +2,7 @@
 
 namespace JuanMartin.Models.Gallery
 {
-    public class PhotoGraphy
+    public class Photography
     {
 
         public enum PhysicalSource

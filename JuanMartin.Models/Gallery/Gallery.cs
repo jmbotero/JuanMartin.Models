@@ -8,5 +8,6 @@ namespace JuanMartin.Models.Gallery
     public class Gallery
     {
         public List<Photography> Album { get; set; }
+        public string SearchQuery { get; set; }
     }
 }

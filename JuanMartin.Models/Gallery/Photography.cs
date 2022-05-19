@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JuanMartin.Models.Gallery
 {
@@ -19,7 +20,7 @@ namespace JuanMartin.Models.Gallery
         public string Path { get; set; }
         public string FileName { get; set; }
         public int NumberOfViews { get; set; }
-        public  string[] Keywords { get; set; }
+        public  List<string> Keywords { get; set; }
         public double Rank { get; set; }
         public string Location { get; set; }
 
@@ -30,7 +31,13 @@ namespace JuanMartin.Models.Gallery
 
         public void AddKeywords(string keywords)
         {
-            Keywords = keywords.Split(',');
+            if (keywords == null)
+            {
+                Keywords = new List<string>();
+                return;
+            }
+
+            Keywords = keywords.Split(',').ToList();
         }
     }
 }

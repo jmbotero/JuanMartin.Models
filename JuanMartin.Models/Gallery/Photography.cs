@@ -21,7 +21,8 @@ namespace JuanMartin.Models.Gallery
         public string FileName { get; set; }
         public int NumberOfViews { get; set; }
         public  List<string> Keywords { get; set; }
-        public double Rank { get; set; }
+        public long Rank { get; set; }
+        public double AverageRank { get; set; }
         public string Location { get; set; }
 
         public override string ToString()

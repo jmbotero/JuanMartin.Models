@@ -20,7 +20,7 @@ namespace JuanMartin.Models.Gallery
         public string Path { get; set; }
         public string FileName { get; set; }
         public int NumberOfViews { get; set; }
-        public  List<string> Keywords { get; set; }
+        public  List<string> Tags { get; set; }
         public long Rank { get; set; }
         public double AverageRank { get; set; }
         public string Location { get; set; }
@@ -30,15 +30,15 @@ namespace JuanMartin.Models.Gallery
             return $"{System.IO.Path.Combine(Path, FileName)},{Rank},{Location}";
         }
 
-        public void AddKeywords(string keywords)
+        public void ParseTags(string tags)
         {
-            if (keywords == null)
+            if (tags == null)
             {
-                Keywords = new List<string>();
+                Tags = new List<string>();
                 return;
             }
 
-            Keywords = keywords.Split(',').ToList();
+            Tags = tags.Split(',').Select(t=>t=t.Trim()).ToList();
         }
     }
 }

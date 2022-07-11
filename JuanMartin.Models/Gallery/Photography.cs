@@ -13,6 +13,10 @@ namespace JuanMartin.Models.Gallery
             slide = 1
         };
 
+        public Photography()
+        {
+            Tags = new List<string>();
+        }
         public long Id { get; set; }
         public int UserId { get; set; }
         public PhysicalSource Source { get; set; }
@@ -32,7 +36,7 @@ namespace JuanMartin.Models.Gallery
 
         public void ParseTags(string tags)
         {
-            if (tags == null)
+            if (string.IsNullOrEmpty(tags))
             {
                 Tags = new List<string>();
                 return;

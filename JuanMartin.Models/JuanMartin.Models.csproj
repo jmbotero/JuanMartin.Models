@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exam.cs" />
+    <Compile Include="Gallery\Address.cs" />
+    <Compile Include="Gallery\CredtCard.cs" />
     <Compile Include="Gallery\Order.cs" />
     <Compile Include="Gallery\Photography.cs" />
     <Compile Include="Gallery\User.cs" />

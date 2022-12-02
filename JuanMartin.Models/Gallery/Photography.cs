@@ -10,7 +10,8 @@ namespace JuanMartin.Models.Gallery
         public enum PhysicalSource
         {
             negative = 0,
-            slide = 1
+            slide = 1,
+           digital = 2
         };
 
         public Photography()

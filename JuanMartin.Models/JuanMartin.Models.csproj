@@ -50,6 +50,11 @@
     <Compile Include="Gallery\Order.cs" />
     <Compile Include="Gallery\Photography.cs" />
     <Compile Include="Gallery\User.cs" />
+    <Compile Include="Music\Beam.cs" />
+    <Compile Include="Music\IStaffPlaceHolder.cs" />
+    <Compile Include="Music\Measure.cs" />
+    <Compile Include="Music\Note.cs" />
+    <Compile Include="Music\Score.cs" />
     <Compile Include="Problem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />

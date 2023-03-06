@@ -30,9 +30,9 @@ namespace JuanMartin.Models.Music
         public bool IsDotted { get; set; } = false;
         public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: Q,H,W
         public int LgderCount { get; set; } = 0;
-        public bool InTie { get; set; } = false;
+        public bool InCurve { get; set; } = false; // tie or slur
         public bool InBeam { get; set; } = false;
         public Beam BeamSet { get; set; }
-        public void Play() { }
+        public void Play(object player) { }
     }
 }

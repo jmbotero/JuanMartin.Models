@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace JuanMartin.Models.Music {
     public interface IStaffPlaceHolder {
-        void Play();
+        void Play(object  player);
     }
 }

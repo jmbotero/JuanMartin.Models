@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace JuanMartin.Models.Music {
     public class Beam : IStaffPlaceHolder {
-        public void Play(object player) { }
+        public Beam()
+        {
+            Notes = new List<Note>();
+        }
+        public List<Note> Notes { get; set; }
     }
 }

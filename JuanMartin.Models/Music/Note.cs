@@ -36,6 +36,8 @@ namespace JuanMartin.Models.Music
         public bool IsDotted { get; set; } = false;
         public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: Q,H,W
         public int LgderCount { get; set; } = 0;
+        public bool LastInCurve { get; set; } = false;
+        public bool LastInBeam { get; set; } = false;
         public bool InCurve { get; set; } = false; // tie or slur
         public CurveType TypeOfCurve { get; set; } = CurveType.none;
         public bool InBeam { get; set; } = false;
@@ -47,7 +49,7 @@ namespace JuanMartin.Models.Music
                 return $"[]{Type}{isDotted}";
 
             else
-                return $"{HasAccidental}{Name}{Type}{isDotted}";
+                return $"{HasAccidental}:{Name}{isDotted}:{Type}";
         }
     }
 }

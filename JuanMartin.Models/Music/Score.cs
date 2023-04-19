@@ -9,8 +9,9 @@ namespace JuanMartin.Models.Music
     public class Score
     {
 
-        public string Name { get; set; }  
+        public string Name { get; set; }
         public string Clef { get; set; }
+        public int Tempo { get; set; }
         public string  TimeSignature { get; set; }
     }
 }

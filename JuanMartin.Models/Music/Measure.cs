@@ -45,6 +45,7 @@ namespace JuanMartin.Models.Music
         public List<List<Note>> CurveSets { get; set; }
         public DynamicsType Dynamics { get; set; } = DynamicsType.neutral;
         public VolumeLoudness Volume { get; set; } = VolumeLoudness.none;
+        public string Instrument { get; set; } = "";
         public void AddCurve(List<Note> curve = null)
         {
             List<Note> newCurve = (curve == null) ? new List<Note>() : curve;

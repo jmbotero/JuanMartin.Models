@@ -51,6 +51,7 @@
     <Compile Include="Gallery\Photography.cs" />
     <Compile Include="Gallery\User.cs" />
     <Compile Include="Music\Beam.cs" />
+    <Compile Include="Music\Chord.cs" />
     <Compile Include="Music\IStaffPlaceHolder.cs" />
     <Compile Include="Music\Measure.cs" />
     <Compile Include="Music\Note.cs" />
@@ -61,6 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\JuanMartin.Kernel\JuanMartin.Kernel\JuanMartin.Kernel.csproj">
+      <Project>{4515e3a1-f6b3-4af5-ae75-bb9e214ec349}</Project>
+      <Name>JuanMartin.Kernel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

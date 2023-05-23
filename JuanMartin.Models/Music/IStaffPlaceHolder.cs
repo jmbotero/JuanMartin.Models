@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace JuanMartin.Models.Music {
     public interface IStaffPlaceHolder {
-        string Staccato { get; set; }
         string ToString();
-        void SetStaccato();
+        string SetStaccato();
     }
 }

@@ -35,7 +35,7 @@ namespace JuanMartin.Models.Music
     }
     public enum AccidentalType
     {
-        [Description("x")]
+        [Description("-")]
         none = -3,
         [Description("bb")]
         doubleFlat = -2,
@@ -45,7 +45,7 @@ namespace JuanMartin.Models.Music
         natural = 0,
         [Description("#")]
         sharp = 1,
-        [Description("##")]
+        [Description("x")]
         doubleSharp = 2
     }
     public class Note : IStaffPlaceHolder
@@ -55,10 +55,11 @@ namespace JuanMartin.Models.Music
         public bool IsRest { get; set; } = false;
         public bool IsDotted { get; set; } = false;
         public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: Q,H,W
-        public string Staccato { get; set; } = "";
         public int LgderCount { get; set; } = 0;
         public bool LastInCurve { get; set; } = false;
+        public bool FirstInCurve { get; set; } = false;
         public bool LastInBeam { get; set; } = false;
+        public bool FirstInBeam { get; set; } = false;
         public bool InCurve { get; set; } = false; // tie or slur
         public CurveType TypeOfCurve { get; set; } = CurveType.none;
         public bool InBeam { get; set; } = false;
@@ -73,10 +74,18 @@ namespace JuanMartin.Models.Music
                 return $"{HasAccidental}:{Name}{isDotted}:{Type}";
         }
 
-        public void SetStaccato()
+        public string SetStaccato()
         {
-            string octave = "";
             string duration = EnumExtensions.GetDescription(Type);
+            if (IsRest)
+            {
+                return $"R{duration}";
+            }
+
+            string octave = "";
+            if (FirstInCurve || InCurve) { duration = duration + "-"; }
+            if (LastInCurve || InCurve) { duration += "-"; }
+
             string accidental = (HasAccidental != AccidentalType.natural) ? EnumExtensions.GetDescription(HasAccidental) : "";
             if (Octave != 4) octave = Octave.ToString();
 
@@ -113,8 +122,8 @@ namespace JuanMartin.Models.Music
                         break;
                 }
             }
-            Staccato = $"{Name}{accidental}{octave}{duration}";
-        }
+            return $"{Name}{accidental}{octave}{duration}";
 
+        }
     }
 }

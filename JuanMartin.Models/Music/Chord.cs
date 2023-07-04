@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using JuanMartin.Kernel.Extesions;
 
 namespace JuanMartin.Models.Music
@@ -50,7 +51,7 @@ namespace JuanMartin.Models.Music
         {
             {"fix", null },
             {"maj", new List<string> {"1","3","5"} },
-            {"min", new List<string> {"1","b3","5"} },
+            {"min", new List<string> {"1","b3","5"} },     
             {"dim", new List<string> {"1","b3","b5"} },
             {"aug", new List<string> {"1","3","#5"} },
             {"dom7", new List<string> {"1","3","5", "b7"} },
@@ -61,28 +62,20 @@ namespace JuanMartin.Models.Music
             {"sus2", new List<string> {"1","2","5"} },
             {"sus4", new List<string> {"1","4","5"} }
         };
-        public string[] ChordNotesScale = { "[A", "", "C#", "", "E","","G#", "[B", "C#", "D#", "E", "F#", "Ab", "A#", "[C", "D", "E", "F", "G", "A", "B", "[D", "E", "F#", "G", "A", "B", "C#","[E", "F#", "G#", "A", "B", "C#", "D", "[F", "G", "A", "Bb", "C", "D", "E" };
-        public string[] NotesOctave  = { "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B" };
+        public string[] ChordNotesScale = { "[A", "B", "C#", "D", "E", "Gb", "G#", "[B", "C#", "D#", "E", "F#", "Ab", "A#", "[C", "D", "E", "F", "G", "A", "B", "[D", "E", "F#", "G", "A-", "C", "C#", "[E", "F#", "G#", "A", "B", "Db", "D*", "[F", "G", "A", "Bb", "C", "Ebb", "E", "F", "[G", "A", "B", "C", "D", "Fb", "F#" };
+        public string[] NotesOctave = { "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B" };
+
         public Note Root { get; set; }
+
+
+
+
         public ChordType Type { get; set; } = ChordType.none;
         public QualityType Quality { get; set; }
         public int Octave { get; set; } = 4;
         public int Inversions { get; set; } = 0;
-        private List<Note> Notes { get; set; } = new List<Note>();
-        private List<string> Intervals { get; set; } = new List<string>();
-        public List<Note> GetListOfChordNotes()
-        {
-            return Notes; 
-        }
-
-        public void SetChordNotes(List<Note> notes)
-        {
-            Notes = notes;
-        }
-        public void AddChordNoteToList(Note note)
-        {
-            Notes.Add(note);
-        }
+        public List<Note> Notes { get; set; } = new List<Note>();
+        public List<string> Intervals { get; set; } = new List<string>();
 
         public string[] GetPitchNamesBasedOnNoteScales(string rootNote, string[] intervals, string[] scales)
         {
@@ -143,7 +136,7 @@ namespace JuanMartin.Models.Music
                 indexPreviousNote = i - 1;
                 string index = i.ToString();
 
-                if (note.HasAccidental != AccidentalType.none) index += EnumExtensions.GetDescription(note.HasAccidental);
+                if (note.Accidental != AccidentalType.none) index += EnumExtensions.GetDescription(note.Accidental);
 
                 return (index,indexPreviousNote);
             }
@@ -189,7 +182,7 @@ namespace JuanMartin.Models.Music
             switch(Type)
             {
                 case ChordType.quality_based:
-                    accidental = (Root.HasAccidental != AccidentalType.none) ? EnumExtensions.GetDescription(Root.HasAccidental) : "";
+                    accidental = (Root.Accidental != AccidentalType.none) ? EnumExtensions.GetDescription(Root.Accidental) : "";
                     StringBuilder stringBuilder = null;
                     if (Inversions>0)
                     {
@@ -200,16 +193,35 @@ namespace JuanMartin.Models.Music
                     staccato = $"{Root.Name}{accidental}{Root.Octave}{Quality}{inversions}";
                     break;
                 case ChordType.fixed_notes:
-                    accidental = (Root.HasAccidental != AccidentalType.none) ? EnumExtensions.GetDescription(Root.HasAccidental) : "";
+                    accidental = (Root.Accidental != AccidentalType.none) ? EnumExtensions.GetDescription(Root.Accidental) : "";
                     staccato = $"{Root.Name}{accidental}{Root.Octave}";
                     foreach (Note note in Notes)
                     {
-                        accidental = (note.HasAccidental != AccidentalType.none) ? EnumExtensions.GetDescription(note.HasAccidental) : "";
+                        accidental = (note.Accidental != AccidentalType.none) ? EnumExtensions.GetDescription(note.Accidental) : "";
                         staccato += $"+{note.Name}{accidental}{Root.Octave}";
                     }
                     break;
             }
             return staccato;
         }
+
+        public override string ToString()
+        {
+            if (Quality != QualityType.fixed_notes)
+            {
+                string accidental = (Root.Accidental != AccidentalType.none) ? EnumExtensions.GetDescription(Root.Accidental) : "";
+                return $"{Root.Name}{Octave}{accidental}{EnumExtensions.GetDescription(Quality)}";
+            }
+            else
+            {
+                StringBuilder s = new StringBuilder();
+                foreach (Note note in Notes) 
+                {
+                    s.Append(note.ToString());
+                    s.Append('_');
+                }
+                return s.ToString();
+        }
+
     }
 }

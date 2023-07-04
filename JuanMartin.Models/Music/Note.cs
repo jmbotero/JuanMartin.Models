@@ -24,7 +24,7 @@ namespace JuanMartin.Models.Music
         quarter = 5,
         [Description("h")]
         half = 6,
-        [Description("w")]
+        [Description("w")]  
         whole = 7
     }
     public enum CurveType
@@ -50,12 +50,12 @@ namespace JuanMartin.Models.Music
     }
     public class Note : IStaffPlaceHolder
     {
-        public AccidentalType HasAccidental { get; set; } = AccidentalType.none;
+        public AccidentalType Accidental { get; set; } = AccidentalType.none;
         public PitchType Type { get; set; } = PitchType.quarter;
         public bool IsRest { get; set; } = false;
         public bool IsDotted { get; set; } = false;
         public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: Q,H,W
-        public int LgderCount { get; set; } = 0;
+        public int LedgerCount { get; set; } = 0;
         public bool LastInCurve { get; set; } = false;
         public bool FirstInCurve { get; set; } = false;
         public bool LastInBeam { get; set; } = false;
@@ -68,10 +68,9 @@ namespace JuanMartin.Models.Music
         {
             var isDotted = (IsDotted) ? "." : "";
             if (IsRest)
-                return $"[]{Type}{isDotted}";
-
+                return $"R:{Type}";
             else
-                return $"{HasAccidental}:{Name}{isDotted}:{Type}";
+                return $"{Accidental}:{Name}{isDotted}:{Octave}:{Type}";
         }
 
         public string SetStaccato()
@@ -86,7 +85,7 @@ namespace JuanMartin.Models.Music
             if (FirstInCurve || InCurve) { duration = duration + "-"; }
             if (LastInCurve || InCurve) { duration += "-"; }
 
-            string accidental = (HasAccidental != AccidentalType.natural) ? EnumExtensions.GetDescription(HasAccidental) : "";
+            string accidental = (Accidental != AccidentalType.natural) ? EnumExtensions.GetDescription(Accidental) : "";
             if (Octave != 4) octave = Octave.ToString();
 
             // Staccato supports dotted durations (for example, q.), in which case the 

@@ -12,12 +12,13 @@ namespace JuanMartin.Models.Music {
             Notes = new List<Note>();
         }
         public List<Note> Notes { get; set; }
-
+        public int index { get; set; }
         public string SetStaccato()
         {
             string staccato = "";
             foreach (var note in Notes)
             {
+                note.Type = PitchType.eigth;
                 staccato += $"{note.SetStaccato()}+";
             }
             return staccato;

@@ -66,10 +66,6 @@ namespace JuanMartin.Models.Music
         public string[] NotesOctave = { "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B" };
 
         public Note Root { get; set; }
-
-
-
-
         public ChordType Type { get; set; } = ChordType.none;
         public QualityType Quality { get; set; }
         public int Octave { get; set; } = 4;
@@ -174,7 +170,7 @@ namespace JuanMartin.Models.Music
                 }
             }
         }
-        public string SetStaccato()
+        public string SetStaccato(Dictionary<string, string> additionalSettings = null)
         {
             string accidental = "";
             string staccato = "";
@@ -215,13 +211,13 @@ namespace JuanMartin.Models.Music
             else
             {
                 StringBuilder s = new StringBuilder();
-                foreach (Note note in Notes) 
+                foreach (Note note in Notes)
                 {
                     s.Append(note.ToString());
                     s.Append('_');
                 }
                 return s.ToString();
+            }
         }
-
     }
 }

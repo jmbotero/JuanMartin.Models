@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using JuanMartin.Kernel.Extesions;
 
 namespace JuanMartin.Models.Music
 {
     public enum PitchType {
         [Description("o")]
-        one_twenty_eighth = 0,
+        one_twenty_eighth = 128,
         [Description("x")]
-        sixty_fourth = 1,
+        sixty_fourth = 64,
         [Description("t")]
-        thirty_second = 2,
+        thirty_second = 32,
         [Description("s")]
-        sisteenth = 3,
+        sisteenth = 16,
         [Description("i")]
-        eigth = 4,
+        eigth = 8,
         [Description("q")]
-        quarter = 5,
+        quarter = 4,
         [Description("h")]
-        half = 6,
+        half = 2,
         [Description("w")]  
-        whole = 7
+        whole = 1
     }
     public enum CurveType
     {
@@ -54,7 +50,7 @@ namespace JuanMartin.Models.Music
         public PitchType Type { get; set; } = PitchType.quarter;
         public bool IsRest { get; set; } = false;
         public bool IsDotted { get; set; } = false;
-        public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: Q,H,W
+        public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: R
         public int LedgerCount { get; set; } = 0;
         public bool LastInCurve { get; set; } = false;
         public bool FirstInCurve { get; set; } = false;
@@ -64,6 +60,8 @@ namespace JuanMartin.Models.Music
         public CurveType TypeOfCurve { get; set; } = CurveType.none;
         public bool InBeam { get; set; } = false;
         public int Octave { get; set; } = 5;
+        public Measure Measure { get; set; } = null;
+
         public override string ToString() 
         {
             var isDotted = (IsDotted) ? "." : "";
@@ -73,8 +71,17 @@ namespace JuanMartin.Models.Music
                 return $"{Accidental}:{Name}{isDotted}:{Octave}:{Type}";
         }
 
-        public string SetStaccato()
+        public string SetStaccato(Dictionary<string, string> additionalSettings = null)
         {
+            string volume = "";
+            if (additionalSettings != null && !IsRest)
+            {
+                if (additionalSettings.ContainsKey(Measure.MeasureNoteVolumeSetting))
+                    volume = additionalSettings[Measure.MeasureNoteVolumeSetting];
+                else if (additionalSettings.ContainsKey(Measure.MeasureDynamicsSetting))
+                    volume = additionalSettings[Measure.MeasureDynamicsSetting];
+            }
+
             string duration = EnumExtensions.GetDescription(Type);
             if (IsRest)
             {
@@ -86,7 +93,7 @@ namespace JuanMartin.Models.Music
             if (LastInCurve || InCurve) { duration += "-"; }
 
             string accidental = (Accidental != AccidentalType.natural) ? EnumExtensions.GetDescription(Accidental) : "";
-            if (Octave != 4) octave = Octave.ToString();
+            if (Measure != null && Measure.Score != null && (Measure.Score.Clef == CllefType.bass && Octave != 4) || (Measure.Score.Clef == CllefType.treble && Octave != 5)) octave = Octave.ToString();
 
             // Staccato supports dotted durations (for example, q.), in which case the 
             // note is played for the original duration plus half of the original duration.
@@ -121,7 +128,7 @@ namespace JuanMartin.Models.Music
                         break;
                 }
             }
-            return $"{Name}{accidental}{octave}{duration}";
+            return $"{Name}{accidental}{octave}{duration}{volume}";
 
         }
     }

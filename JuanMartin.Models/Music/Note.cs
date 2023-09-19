@@ -23,12 +23,6 @@ namespace JuanMartin.Models.Music
         [Description("w")]  
         whole = 1
     }
-    public enum CurveType
-    {
-        tie = 0,
-        slur = 1,
-        none = 2
-    }
     public enum AccidentalType
     {
         [Description("-")]
@@ -46,9 +40,16 @@ namespace JuanMartin.Models.Music
     }
     public class Note : IStaffPlaceHolder
     {
-        public AccidentalType Accidental { get; set; } = AccidentalType.none;
-        public PitchType Type { get; set; } = PitchType.quarter;
+        public const string NoteIsReadableSetting = "IsReadable";
+        public const int NoteDefaultOctaveSetting = 5;
+        public const PitchType NoteDefaultPitchSetting = PitchType.quarter;
+        public const AccidentalType NoteDefaultAccidentalSetting = AccidentalType.none;
+        public const CurveType NoteDefaultCurveTypeSetting = CurveType.none;
+
+        public AccidentalType Accidental { get; set; } = NoteDefaultAccidentalSetting;
+        public PitchType Type { get; set; } = NoteDefaultPitchSetting;
         public bool IsRest { get; set; } = false;
+        public bool IsMicrotone { get; set; } = false;
         public bool IsDotted { get; set; } = false;
         public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: R
         public int LedgerCount { get; set; } = 0;
@@ -57,18 +58,19 @@ namespace JuanMartin.Models.Music
         public bool LastInBeam { get; set; } = false;
         public bool FirstInBeam { get; set; } = false;
         public bool InCurve { get; set; } = false; // tie or slur
-        public CurveType TypeOfCurve { get; set; } = CurveType.none;
+        public CurveType TypeOfCurve { get; set; } = NoteDefaultCurveTypeSetting;
+        public int CurveIndex { get; set; } = -1;
         public bool InBeam { get; set; } = false;
-        public int Octave { get; set; } = 5;
+        public int Octave { get; set; } = NoteDefaultOctaveSetting;
         public Measure Measure { get; set; } = null;
 
         public override string ToString() 
         {
-            var isDotted = (IsDotted) ? "." : "";
-            if (IsRest)
-                return $"R:{Type}";
-            else
-                return $"{Accidental}:{Name}{isDotted}:{Octave}:{Type}";
+            Dictionary<string, string> additionalSettings = new Dictionary<string, string>
+            {
+                { NoteIsReadableSetting, "true" }
+            };
+            return SetStaccato(additionalSettings);
         }
 
         public string SetStaccato(Dictionary<string, string> additionalSettings = null)
@@ -83,17 +85,29 @@ namespace JuanMartin.Models.Music
             }
 
             string duration = EnumExtensions.GetDescription(Type);
+            if (InCurve)
+            {
+                if (FirstInCurve) { duration = duration + "-"; }
+                else if (LastInCurve) { duration = "-" + duration; }
+                else { duration = "-" + duration + "-"; };
+            }
+
             if (IsRest)
             {
                 return $"R{duration}";
             }
 
-            string octave = "";
-            if (FirstInCurve || InCurve) { duration = duration + "-"; }
-            if (LastInCurve || InCurve) { duration += "-"; }
-
             string accidental = (Accidental != AccidentalType.natural) ? EnumExtensions.GetDescription(Accidental) : "";
-            if (Measure != null && Measure.Score != null && (Measure.Score.Clef == CllefType.bass && Octave != 4) || (Measure.Score.Clef == CllefType.treble && Octave != 5)) octave = Octave.ToString();
+
+            string octave = "";
+            if (LedgerCount != 0)
+            {
+                if (additionalSettings != null && additionalSettings.ContainsKey(NoteIsReadableSetting) && additionalSettings[NoteIsReadableSetting] == "true")
+                    octave = $"{Octave}({LedgerCount})";
+                else
+                    octave = $"{Octave + LedgerCount}";
+
+            }
 
             // Staccato supports dotted durations (for example, q.), in which case the 
             // note is played for the original duration plus half of the original duration.

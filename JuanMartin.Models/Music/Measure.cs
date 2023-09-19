@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using JuanMartin.Kernel.Extesions;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Text;
-using JuanMartin.Kernel.Extesions;
 
 namespace JuanMartin.Models.Music
 {
@@ -45,19 +45,25 @@ namespace JuanMartin.Models.Music
         public const string MeasureHeaderSetting = "Header";
         public const string MeasureDynamicsSetting = "Dynamics";
         public const string MeasureNoteVolumeSetting = "Volume";
+        public const int MeasureDefaultClefIndexSetting = 0;
+
+        public int Index { get; set; } = 0; // position in score
+        public int ClefIndex { get; set; } = MeasureDefaultClefIndexSetting;
         public List<IStaffPlaceHolder> Notes { get; set; }
         public List<Beam> BeamSets { get; set; }
-        public List<List<Note>> CurveSets { get; set; }
+        public List<Curve> CurveSets { get; set; }
         public DynamicsType Dynamics { get; set; } = DynamicsType.neutral;
         public VolumeLoudness Volume { get; set; } = VolumeLoudness.none;
         public string Instrument { get; set; } = "";
         public int Voice { get; set; } = -1;
         public Score Score { get; set; } = null;
-        public void AddCurve(List<Note> curve = null)
+
+
+        public void AddCurve(Curve curve = null)
         {
-            List<Note> newCurve = (curve == null) ? new List<Note>() : curve;
+            Curve newCurve = (curve == null) ? new Curve() : curve;
             if (CurveSets == null)
-                CurveSets = new List<List<Note>>();
+                CurveSets = new List<Curve>();
 
             CurveSets.Add(newCurve);
         }
@@ -73,14 +79,18 @@ namespace JuanMartin.Models.Music
 
         public override string ToString()
         {
-            StringBuilder measure = new StringBuilder();
+            string aux = StringMeasureHeader(true);
+            if (aux != "")
+                aux = $"{Measure.MeasureDelimiter}{aux} ";
+
+            StringBuilder measure = new StringBuilder(aux);
 
             if (Notes != null && Notes.Count > 0)
             {
-                measure.Append(Measure.MeasureDelimiter);
+                measure.Append(Measure.MeasureDelimiter + " ");
                 foreach (var note in Notes)
                 {
-                    measure.Append(note.ToString()  );
+                    measure.Append(note.ToString() + " "  );
                 }
                 measure.Append(Measure.MeasureDelimiter);
             }
@@ -88,11 +98,47 @@ namespace JuanMartin.Models.Music
             return measure.ToString();
         }
 
+        public string StringMeasureHeader(bool includeDynamics = false)
+        {
+            string aux = (includeDynamics && Dynamics != DynamicsType.neutral)?EnumExtensions.GetDescription(Dynamics): "";
+            StringBuilder header = new StringBuilder($"{aux} ");
+
+            aux = (Voice != -1) ? $"V{Voice} " : "";
+            if (aux != "") header.Append(aux);
+            aux = (Instrument != "") ? $"I[{Instrument}] " : "";
+            if (aux != "") header.Append(aux);
+
+            return header.ToString();
+        }
+
         public string SetStaccato(Dictionary<string, string> additionalSettings = null)
         {
             string aux = "";
             StringBuilder staccato = new StringBuilder(aux);
+            PrcessNoteSettings(additionalSettings);
 
+            if (additionalSettings != null && additionalSettings.ContainsKey(MeasureHeaderSetting))
+            {
+                additionalSettings.Remove(MeasureHeaderSetting);
+
+                staccato.Append($" {StringMeasureHeader()}");
+            }
+
+            if (Notes != null && Notes.Count > 0)
+            {
+                staccato.Append($"{Measure.MeasureDelimiter} ");
+                foreach (var note in Notes)
+                {
+                    staccato.Append($"{note.SetStaccato(additionalSettings)} ");
+                }
+                staccato.Append(Measure.MeasureDelimiter);
+            }
+
+            return staccato.ToString();
+        }
+
+        public Dictionary<string, string> PrcessNoteSettings(Dictionary<string, string> additionalSettings)
+        {
             if (additionalSettings != null && additionalSettings.ContainsKey(MeasureDynamicsSetting))
             {
                 additionalSettings.Remove(MeasureNoteVolumeSetting);
@@ -125,31 +171,8 @@ namespace JuanMartin.Models.Music
                     additionalSettings.Add(MeasureNoteVolumeSetting, settingValue);
                 }
             }
-            
-            if(additionalSettings != null && additionalSettings.ContainsKey(MeasureHeaderSetting))
-            {
-                additionalSettings.Remove(MeasureHeaderSetting);
 
-                staccato.Append(" ");
-                aux = (Voice != -1) ? $"V{Voice} " : "";
-                if (aux != "") staccato.Append(aux);
-                aux = (Instrument != "") ? $"I[{Instrument}] " : "";
-                if (aux != "") staccato.Append(aux);
-            }
-
-            if (Notes != null && Notes.Count > 0)
-            {
-                staccato.Append($"{Measure.MeasureDelimiter} ");
-                foreach (var note in Notes)
-                {
-                    staccato.Append($"{note.SetStaccato(additionalSettings)} ");
-                }
-               staccato.Append(Measure.MeasureDelimiter);
-            }
-
-            return staccato.ToString();
+            return additionalSettings;
         }
-
-
     }
 }

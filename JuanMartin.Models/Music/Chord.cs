@@ -210,13 +210,13 @@ namespace JuanMartin.Models.Music
             }
             else
             {
-                StringBuilder s = new StringBuilder();
-                foreach (Note note in Notes)
+                StringBuilder chord = new StringBuilder();
+                foreach ((Note note, int index) in Notes.Enumerate())
                 {
-                    s.Append(note.ToString());
-                    s.Append('_');
+                    chord.Append(note.ToString());
+                    if(index == Notes.Count - 1) chord.Append('+');
                 }
-                return s.ToString();
+                return chord.ToString();
             }
         }
     }

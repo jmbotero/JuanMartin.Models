@@ -14,6 +14,20 @@ namespace JuanMartin.Models.Music {
         }
         public List<Note> Notes { get; set; }
         public int index { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder beam = new StringBuilder();
+            beam.Append("[");
+            foreach (var note in Notes)
+            {
+                beam.Append(" ");
+                beam.Append(note.ToString());
+            }
+            beam.Append(" ]");
+            return beam.ToString();
+        }
+
         public string SetStaccato(Dictionary<string, string> additionalSettings = null)
         {
             int index = 0;
@@ -21,7 +35,7 @@ namespace JuanMartin.Models.Music {
             foreach (var note in Notes)
             {
                 note.Type = PitchType.eigth;
-                staccato += note.SetStaccato();
+                staccato += note.SetStaccato(additionalSettings);
                 if (index < Notes.Count - 1)
                     staccato = staccato + "+";
                 index++;

@@ -52,6 +52,7 @@
     <Compile Include="Gallery\User.cs" />
     <Compile Include="Music\Beam.cs" />
     <Compile Include="Music\Chord.cs" />
+    <Compile Include="Music\Curve.cs" />
     <Compile Include="Music\IStaffPlaceHolder.cs" />
     <Compile Include="Music\Measure.cs" />
     <Compile Include="Music\Note.cs" />

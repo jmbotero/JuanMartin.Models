@@ -62,14 +62,14 @@
     <Compile Include="Result.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\JuanMartin.Kernel\JuanMartin.Kernel\JuanMartin.Kernel.csproj">
       <Project>{4515e3a1-f6b3-4af5-ae75-bb9e214ec349}</Project>
       <Name>JuanMartin.Kernel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

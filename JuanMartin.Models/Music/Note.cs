@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using JuanMartin.Kernel.Extesions;
 
 namespace JuanMartin.Models.Music
@@ -40,8 +39,10 @@ namespace JuanMartin.Models.Music
     }
     public class Note : IStaffPlaceHolder
     {
+        public static readonly char[] noteNames = new char[] { 'B', 'A', 'G', 'F', 'E', 'D', 'C', 'R' };
         public const string NoteIsReadableSetting = "IsReadable";
         public const int NoteDefaultOctaveSetting = 5;
+        public const int NoteDefaultNameIndexSetting = 1;
         public const PitchType NoteDefaultPitchSetting = PitchType.quarter;
         public const AccidentalType NoteDefaultAccidentalSetting = AccidentalType.none;
         public const CurveType NoteDefaultCurveTypeSetting = CurveType.none;
@@ -51,7 +52,8 @@ namespace JuanMartin.Models.Music
         public bool IsRest { get; set; } = false;
         public bool IsMicrotone { get; set; } = false;
         public bool IsDotted { get; set; } = false;
-        public string Name { get; set; } = "A";   // pitch: A,B,C,D,E,F,G rests: R
+        public int Index { get; set; } = NoteDefaultNameIndexSetting;
+        public string Name { get; set; } = noteNames[NoteDefaultNameIndexSetting].ToString();
         public int LedgerCount { get; set; } = 0;
         public bool LastInCurve { get; set; } = false;
         public bool FirstInCurve { get; set; } = false;

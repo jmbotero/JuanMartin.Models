@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace JuanMartin.Models.Gallery
@@ -9,9 +10,12 @@ namespace JuanMartin.Models.Gallery
 
         public enum PhysicalSource
         {
+            [Description("negative")] //default
             negative = 0,
+            [Description("slidde")]
             slide = 1,
-           digital = 2
+            [Description("digital")]
+            digital = 2
         };
 
         public Photography()

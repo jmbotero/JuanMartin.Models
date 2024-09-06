@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JuanMartin.Models
+namespace JuanMartin.Models.Euler
 {
     public class Exam
     {

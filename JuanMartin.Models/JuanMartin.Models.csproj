@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exam.cs" />
+    <Compile Include="Euler\Exam.cs" />
     <Compile Include="Gallery\Address.cs" />
     <Compile Include="Gallery\CredtCard.cs" />
     <Compile Include="Gallery\Order.cs" />
@@ -57,9 +57,9 @@
     <Compile Include="Music\Measure.cs" />
     <Compile Include="Music\Note.cs" />
     <Compile Include="Music\Score.cs" />
-    <Compile Include="Problem.cs" />
+    <Compile Include="Euler\Problem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Result.cs" />
+    <Compile Include="Euler\Result.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -71,5 +71,6 @@
       <Name>JuanMartin.Kernel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

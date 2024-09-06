@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace JuanMartin.Models
+namespace JuanMartin.Models.Euler
 {
     public class Problem
     {

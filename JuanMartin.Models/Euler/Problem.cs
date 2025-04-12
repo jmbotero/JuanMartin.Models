@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace JuanMartin.Models.Euler
 {
@@ -68,13 +69,18 @@ namespace JuanMartin.Models.Euler
             IntNumber = argument4;
         }
 
-        public Problem(int argument1, EulerProblem argument2, string argument3)
-            : this(argument1,argument2)
-        {
-            Sequence = argument3;
-        }
+		public Problem(int argument1, EulerProblem argument2, string argument3)
+			: this(argument1, argument2)
+		{
+			Sequence = argument3;
+		}
+		public Problem(int argument1, EulerProblem argument2, List<int> argument3)
+			: this(argument1, argument2)
+		{
+			ListOfNumbers = argument3;
+		}
 
-        public Problem(int argument1, EulerProblem argument2, string argument3, List<int> argument4)
+		public Problem(int argument1, EulerProblem argument2, string argument3, List<int> argument4)
             : this(argument1, argument2, argument3)
         {
             ListOfNumbers = argument4;
